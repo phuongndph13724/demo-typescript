@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react'
 import logo from './logo.svg'
 import './App.css'
-import ShowInfo from './components/ShowInfo';
 import { list, remove } from './api/product';
 import { ProductType } from './types/product'
 import axios from 'axios'
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
+import WebsiteLayout from './pages/layouts/WebsiteLayout';
+import Home from './pages/Home';
+import Product from './pages/Product';
+import AdminLayout from './pages/layouts/AdminLayout';
+import Dashboard from './pages/Dashboard';
+import ManagerProduct from './pages/ManagerProduct';
 
 function App() {
   const [products, setProducts] = useState<ProductType[]>([]);
@@ -47,17 +52,28 @@ function App() {
         </table> */}
         <header>
           <ul>
-            <li><a href="/">Home Page</a></li>
-            <li><a href="/product">Product Page</a></li>
-            <li><a href="/about">About</a></li>
+            <li><NavLink to="/">Home page</NavLink></li>
+          <li><NavLink to="/product">Product</NavLink></li>
+          <li><NavLink to="/about">About</NavLink></li>
+          <li><NavLink to="/admin/dashboard">Admin Dashboard</NavLink></li>
           </ul>
         </header>
         <main>
           <Routes>
-              <Route path="/" element={<h1>Home page</h1>} />
+              {/* <Route path="/" element={<h1>Home page</h1>} />
               <Route path="product" element={<h1>Product page</h1>} />
-              <Route path="/about" element={<h1>About page</h1>} />
+              <Route path="/about" element={<h1>About page</h1>} /> */}
+              <Route path="/" element={<WebsiteLayout/>}>
+                <Route index element={<Home />} />
+                <Route path="product" element={<Product />} />
+              </Route>
+              <Route path="admin" element={<AdminLayout/>}>
+                  <Route index element={<Navigate to="dashboard"/>}/>
+                  <Route path="dashboard" element={<Dashboard/>}/>
+                  <Route path="product" element={<ManagerProduct/>}/>
+              </Route>
           </Routes>
+          
         </main>
       </div>
     </div>
