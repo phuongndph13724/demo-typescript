@@ -1,12 +1,6 @@
 {
   "products": [
     {
-      "id": 1,
-      "name": "Iphone XS",
-      "title": "Verygood",
-      "price": "29000000"
-    },
-    {
       "id": 2,
       "name": "Iphone 4 ",
       "title": "Verygood",
@@ -17,6 +11,33 @@
       "name": "Iphone 9 ",
       "title": "Verygood",
       "price": "2900000"
+    },
+    {
+      "name": "Sản phẩm 1",
+      "price": "1212121",
+      "id": 4
+    },
+    {
+      "name": "Sản phẩm 2",
+      "price": "1212121212121",
+      "id": 5
+    },
+    {
+      "name": "Sản Phẩm đâsdsa",
+      "price": "1222222",
+      "id": 6
+    },
+    {
+      "name": "Sản phẩm mới 01",
+      "price": "2000",
+      "title": "Sản phẩm hot",
+      "id": 7
+    },
+    {
+      "name": "Sản Phẩm A cr",
+      "price": "111",
+      "title": "adsad",
+      "id": 8
     }
   ]
 }

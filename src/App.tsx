@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import logo from './logo.svg'
 import './App.css'
-import { list, remove } from './api/product';
+import { add, list, remove , } from './api/product';
 import { ProductType } from './types/product'
 import axios from 'axios'
 import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
@@ -11,6 +11,8 @@ import Product from './pages/Product';
 import AdminLayout from './pages/layouts/AdminLayout';
 import Dashboard from './pages/Dashboard';
 import ManagerProduct from './pages/ManagerProduct';
+import ProductAdd from './pages/ProductAdd';
+import ProductEdit from './pages/ProductEdit';
 
 function App() {
   const [products, setProducts] = useState<ProductType[]>([]);
@@ -22,47 +24,32 @@ function App() {
     }
     getProducts();
   },[])
-  const removeItem = async (id: number) => {
-    // xoa tren API
-    const { data } = await remove(id);
-    // reRender
-    data && setProducts(products.filter(item => item._id !== data._id));
+
+  const onHandleRemove = async (id: number) => {
+    remove(id);
+    // rerender
+    setProducts(products.filter((item) => item.id !== id));
+  };
+
+  const onHandleAdd = async (product: ProductType) => {
+    // call api
+    const { data} = await add(product);
+    setProducts([...products, data])
   }
   return (
     <div className="App">
       <hr></hr>
        <div>
-        {/* <table className='App' border="1">
-          <thead>
-            <th>Stt</th>
-          <th>Name</th>
-          <th>Price</th>
-          <th>Title</th>
-          </thead>
-          {products.map((item,index) =><tbody>
-            <th>{index+1}</th>
-            <td>{item.name}</td>
-            <td>{item.price}</td>
-            <td>{item.title}</td>
-            <td>
-              <button onClick={() => removeItem(item._id)}>Remove</button>
-            </td>
-          </tbody>)}
-          
-        </table> */}
         <header>
-          <ul>
+          {/* <ul>
             <li><NavLink to="/">Home page</NavLink></li>
           <li><NavLink to="/product">Product</NavLink></li>
           <li><NavLink to="/about">About</NavLink></li>
           <li><NavLink to="/admin/dashboard">Admin Dashboard</NavLink></li>
-          </ul>
+          </ul> */}
         </header>
         <main>
           <Routes>
-              {/* <Route path="/" element={<h1>Home page</h1>} />
-              <Route path="product" element={<h1>Product page</h1>} />
-              <Route path="/about" element={<h1>About page</h1>} /> */}
               <Route path="/" element={<WebsiteLayout/>}>
                 <Route index element={<Home />} />
                 <Route path="product" element={<Product />} />
@@ -70,7 +57,9 @@ function App() {
               <Route path="admin" element={<AdminLayout/>}>
                   <Route index element={<Navigate to="dashboard"/>}/>
                   <Route path="dashboard" element={<Dashboard/>}/>
-                  <Route path="product" element={<ManagerProduct/>}/>
+                  <Route path="product" element={<ManagerProduct data={products} onRemove={onHandleRemove}/>}/>
+                  <Route path=":id/edit" element={<ProductEdit />} />
+                  <Route path='/admin/product/add' element={<ProductAdd onAdd={onHandleAdd}/>}/>
               </Route>
           </Routes>
           
